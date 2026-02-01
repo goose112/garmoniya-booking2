@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гостиница Гармония</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* ------------  ОБЩИЕ СТИЛИ (перенесены из index.html) ------------  */
+        body {
+            margin: 0;
+        }
+
+        .wrapper {
+            overflow-x: hidden;
+        }
+
+        header.container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #fa9021;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 35px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-list a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 400;
+            transition: 0.3s;
+        }
+
+        .nav-list a:hover {
+            color: #fa9021;
+        }
+
+        /* ------------  СТИЛИ КНОПКИ-ГАМБУРГЕРА (перенесены из index.html) ------------  */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            right: 20px;
+            top: 35px;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .bar {
+            width: 30px;
+            height: 3px;
+            background-color: #fa9021;
+            margin: 4px 0;
+            transition: 0.4s;
+            border-radius: 2px;
+        }
+
+        /* ------------  МЕДИА-ЗАПРОС (MOBILE) (перенесены из index.html) ------------  */
+        @media screen and (max-width: 768px) {
+            header.container {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .logo {
+                font-size: 22px;
+                margin-bottom: 0;
+            }
+
+            .menu-toggle {
+                display: flex;
+                position: static;
+            }
+
+            .nav-list {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: rgba(18, 18, 18, 0.98);
+                text-align: center;
+                padding: 30px 0;
+                z-index: 1000;
+                border-top: 2px solid #fa9021;
+            }
+
+            .nav-list.active {
+                display: flex;
+            }
+
+            .nav-list li {
+                margin: 15px 0;
+            }
+        }
+
+        /* ------------  АНИМАЦИЯ КРЕСТИКА (перенесены из index.html) ------------  */
+        .menu-toggle.is-active .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.is-active .bar:nth-child(1) {
+            transform: translateY(11px) rotate(45deg);
+        }
+
+        .menu-toggle.is-active .bar:nth-child(3) {
+            transform: translateY(-11px) rotate(-45deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="container">
+            <div class="logo">Гармония</div>
+            <button class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <nav>
+                <ul class="nav-list">
+                    <li class="active"><a href="index.html">Главная</a></li>
+                    <li><a href="about.html">Номера</a></li>
+                    <li><a href="contackt.html">Контакты</a></li>
+                    <li><a href="novo.html">Узнать о дате</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="hero container">
+            <div class="hero--info">
+                <h2>Открытие сезона 2026</h2>
+                <h1>Добро пожаловать в "Гармонию"</h1>
+                <!-- ИСПРАВЛЕННЫЙ АДРЕС В ТЕКСТЕ -->
+                <p>Наш адрес: ст-ца Голубицкая, ул. Васильковая, 10. Мы готовимся к вашему лучшему лету!</p>
+
+                <!-- УДАЛЕН КОНТЕЙНЕР КАРТЫ И IFRAME -->
+
+            </div>
+
+            <div class="hero--images">
+                <img src="img/1000005840.png" alt="Интерьер 1" class="img-main">
+                <img src="img/1000005845.png" alt="Интерьер 2" class="img-sub">
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Скрипт для открытия/закрытия меню
+        const menu = document.querySelector('#mobile-menu');
+        const menuLinks = document.querySelector('.nav-list');
+
+        menu.addEventListener('click', function() {
+            menu.classList.toggle('is-active');
+            menuLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+
+</html>

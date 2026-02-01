@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты - Гостиница Гармония</title>
+    <link rel="stylesheet" href="css/main.css">
+    <!-- Подключаем иконки для красоты -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* ------------  ОБЩИЕ СТИЛИ  ------------  */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #fff;
+            line-height: 1.6;
+            overflow-x: hidden; /* Предотвратить горизонтальную прокрутку на уровне body */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ------------  HEADER  ------------  */
+        header.container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 20px;
+            position: relative; /* Добавлено для контекста позиционирования */
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fa9021;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            padding: 0;
+            margin: 0;
+
+        }
+
+        .nav-list a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 400;
+            transition: 0.3s;
+        }
+
+        .nav-list a:hover, .nav-list li.active a {
+            color: #fa9021;
+        }
+
+        /* ------------  БУРГЕР МЕНЮ  ------------  */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            background: none;
+            border: none;
+            z-index: 1001;
+        }
+
+        .bar {
+            width: 30px;
+            height: 3px;
+            background-color: #fa9021;
+            margin: 4px 0;
+            transition: 0.4s;
+        }
+
+        /* ------------  КОНТАКТЫ (ОСНОВНОЙ БЛОК)  ------------  */
+        .contact-section {
+            padding: 60px 0;
+        }
+
+        .contact-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .contact-title h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .contact-title p {
+            color: #888;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .contact-card {
+            background: #1a1a1a;
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(250, 144, 33, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .info-item i {
+            font-size: 24px;
+            color: #fa9021;
+            margin-right: 20px;
+            margin-top: 5px;
+        }
+
+        .info-text h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #fa9021;
+        }
+
+        .info-text p, .info-text a {
+            margin: 5px 0 0;
+            color: #ccc;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+        }
+
+        /* ------------  КНОПКИ СОЦСЕТЕЙ  ------------  */
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .social-button {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            transition: 0.3s;
+            gap: 10px;
+        }
+
+        /* Брендовые цвета */
+        .tg { background-color: #229ED9; }
+        .wa { background-color: #25D366; }
+        .vk { background-color: #0077FF; }
+
+        .social-button:hover {
+            transform: translateY(-5px);
+            filter: brightness(1.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* ------------  КАРТА  ------------  */
+        .map-box {
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(250, 144, 33, 0.2);
+            height: 100%;
+            min-height: 400px;
+        }
+
+        /* ------------  АДАПТИВНОСТЬ  ------------  */
+        @media screen and (max-width: 992px) {
+            .contact-grid { grid-template-columns: 1fr; }
+            .map-box { min-height: 300px; }
+        }
+
+        @media screen and (max-width: 768px) {
+            /* Уменьшение размеров для мобильных устройств */
+            .container {
+                padding: 0 10px; /* Уменьшенный отступ по бокам */
+            }
+
+            .contact-title h1 {
+                font-size: 32px;
+            }
+
+            .contact-title p {
+                font-size: 14px;
+            }
+
+            .contact-card {
+                padding: 20px;
+            }
+
+            .info-item i {
+                font-size: 20px;
+            }
+
+            .info-text h3 {
+                font-size: 16px;
+            }
+
+            .info-text p,
+            .info-text a {
+                font-size: 14px;
+            }
+
+            .social-links {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px; /* Меньший отступ между кнопками */
+            }
+
+            .social-button {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            /* Дополнительные настройки для навигации */
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-list {
+                display: none;
+                flex-direction: column;
+                position: absolute; /* Изменено на absolute */
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #121212;
+                justify-content: flex-start;
+                align-items: center;
+                z-index: 1000;
+                padding-top: 20px;
+            }
+
+            .nav-list.active {
+                display: flex;
+            }
+
+            .nav-list li {
+                margin: 15px 0;
+            }
+
+
+        }
+        @media screen and (max-width: 576px) {
+            .logo {
+                font-size: 24px; /* Еще уменьшаем логотип на очень маленьких экранах */
+            }
+            header.container {
+                padding: 20px 10px; /* Уменьшаем отступы в шапке */
+            }
+        }
+
+        /* Анимация крестика */
+        .menu-toggle.is-active .bar:nth-child(2) { opacity: 0; }
+        .menu-toggle.is-active .bar:nth-child(1) { transform: translateY(11px) rotate(45deg); }
+        .menu-toggle.is-active .bar:nth-child(3) { transform: translateY(-11px) rotate(-45deg); }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="container">
+            <div class="logo">Гармония</div>
+            <button class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="about.html">Номера</a></li>
+                    <li class="active"><a href="contackt.html">Контакты</a></li>
+                    <li><a href="novo.html">Узнать о дате</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="container contact-section">
+            <div class="contact-title">
+                <h1>Наши контакты</h1>
+                <p>Мы всегда на связи и готовы ответить на ваши вопросы</p>
+            </div>
+
+            <div class="contact-grid">
+                <!-- Левая колонка: Инфо -->
+                <div class="contact-card">
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="info-text">
+                            <h3>Адрес</h3>
+                            <p>ст-ца Голубицкая, ул. Васильковая, 10</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div class="info-text">
+                            <h3>Телефон</h3>
+                            <a href="tel:+71111111111">+7 (111) 111-11-11</a>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div class="info-text">
+                            <h3>Электронная почта</h3>
+                            <a href="mailto:info@garmoniya.ru">info@garmoniya.ru</a>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <div class="info-text">
+                            <h3>Режим работы</h3>
+                            <p>Круглосуточно / Без выходных</p>
+                        </div>
+                    </div>
+
+                    <!-- Кнопки соцсетей -->
+                    <div class="social-links">
+                        <a href="#" class="social-button tg" target="_blank">
+                            <i class="fab fa-telegram-plane"></i> Telegram
+                        </a>
+                        <a href="#" class="social-button wa" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                        <a href="#" class="social-button vk" target="_blank">
+                            <i class="fab fa-vk"></i> ВКонтакте
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Правая колонка: Карта -->
+                <div class="map-box">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2813.5284712068!2d37.2831!3d45.3263!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDXCsDE5JzM0LjciTiAzN8KwMTYnNTkuMiJF!5e0!3m2!1sru!2sru!4v1620000000000!5m2!1sru!2sru" 
+                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Скрипт для мобильного меню
+        const menu = document.querySelector('#mobile-menu');
+        const menuLinks = document.querySelector('.nav-list');
+
+        menu.addEventListener('click', function() {
+            menu.classList.toggle('is-active');
+            menuLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+
+</html>

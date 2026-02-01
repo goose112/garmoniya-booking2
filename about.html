@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Номера в гостинице Гармония</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Общие стили для страницы */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .wrapper {
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Стили для шапки */
+        header.container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fa9021;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Стили для навигации */
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+
+        nav li {
+            margin-left: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #fa9021;
+        }
+
+        nav li.active a {
+            color: #fa9021;
+        }
+
+        /* Стили для контента */
+        main.container {
+            padding-top: 30px;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+
+        /* Общие стили для номеров */
+        .room {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            border: 1px solid #444;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #111;
+        }
+
+        .room h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #eee;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .room p {
+            text-align: center;
+            margin-bottom: 20px;
+            opacity: 0.8;
+            color: #ccc;
+        }
+
+        /* Стили для изображений */
+        .room-images {
+            display: flex;
+            overflow: hidden;
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .room-images img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        /* Стили для навигации */
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            padding: 0 10px;
+        }
+
+        .navigation button {
+            background: rgba(250, 144, 33, 0.7);
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .navigation button:hover {
+            background: rgba(250, 144, 33, 1);
+        }
+
+        .navigation button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .navigation i {
+            margin: 0 5px;
+        }
+
+        .room .btn {
+            background: #fa9021;
+            color: #fff;
+            border: none;
+            padding: 15px 35px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .room .btn:hover {
+            background: #e07d1a;
+            transform: translateY(-3px);
+        }
+
+        /* Медиа-запросы для адаптивности */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 24px;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+             /* Скрываем обычную навигацию */
+            nav ul {
+                display: none;
+            }
+
+            /* Кнопка меню (три полоски) */
+            .menu-toggle {
+                display: block;
+                font-size: 24px;
+                color: #fff;
+                cursor: pointer;
+            }
+
+            /* Показываем меню, когда класс .active добавляется к nav */
+            nav.active ul {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 60px; /* Под хедером */
+                right: 0;
+                background-color: rgba(0, 0, 0, 0.9);
+                width: 100%;
+                padding: 10px;
+                z-index: 10;
+            }
+
+            nav.active li {
+                margin: 10px 0;
+                text-align: center;
+            }
+
+             /* Стили для адаптивных изображений */
+             .room-images {
+                max-width: 100%; /* Занимает всю ширину на мобильных */
+                height: 200px; /* Уменьшаем высоту */
+             }
+
+             .room h3 {
+            font-size: 20px; /* Уменьшаем заголовок */
+        }
+
+        .room p {
+            font-size: 16px; /* Уменьшаем текст */
+        }
+
+        .room .btn {
+            padding: 10px 20px; /* Уменьшаем кнопки */
+            font-size: 14px;
+        }
+
+        }
+
+         /* Стили для кнопки меню */
+        .menu-toggle {
+            display: none;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* Показываем кнопку меню на мобильных устройствах */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header class="container">
+            <div class="logo">Гармония</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li class="active"><a href="about.html">Номера</a></li>
+                    <li><a href="contackt.html">Контакты</a></li>
+                    <li><a href="novo.html">Узнать о дате</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </header>
+
+        <main class="container">
+            <h1>Наши номера</h1>
+            <p>Выберите свой идеальный номер для незабываемого отдыха!</p>
+
+            <div class="room">
+                <h3>Номер "Стандарт"</h3>
+                <div class="room-images">
+                    <img src="img/1000005840.png" alt="Номер Стандарт 1" data-index="0">
+                    <img src="img/1000005845.png" alt="Номер Стандарт 2" data-index="1">
+                    <div class="navigation">
+                        <button onclick="prevImage(this)" data-room="standard" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button onclick="nextImage(this)" data-room="standard">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <p>Уютный номер с базовыми удобствами для комфортного пребывания.</p>
+                <button class="btn" onclick="window.location.href='broner.html'">Забронировать</button>
+            </div>
+
+            <div class="room">
+                <h3>Номер "Люкс"</h3>
+                <div class="room-images">
+                    <img src="img/1000005845.png" alt="Номер Люкс 1" data-index="0">
+                    <img src="img/1000005840.png" alt="Номер Люкс 2" data-index="1">
+                    <div class="navigation">
+                        <button onclick="prevImage(this)" data-room="luxe" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button onclick="nextImage(this)" data-room="luxe">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <p>Просторный номер с улучшенными удобствами и прекрасным видом.</p>
+                <button class="btn" onclick="window.location.href='broner.html'">Забронировать</button>
+            </div>
+            <!-- Другие номера добавляйте здесь -->
+        </main>
+    </div>
+
+    <script>
+        // JavaScript для навигации по изображениям
+        function updateNavigationButtons(roomElement, currentIndex, totalImages) {
+            const prevButton = roomElement.querySelector('button[onclick="prevImage(this)"]');
+            const nextButton = roomElement.querySelector('button[onclick="nextImage(this)"]');
+
+            prevButton.disabled = currentIndex === 0;
+            nextButton.disabled = currentIndex === totalImages - 1;
+        }
+
+        function showImage(roomElement, index) {
+            const images = roomElement.querySelectorAll('.room-images img');
+            images.forEach((img, i) => {
+                img.style.transform = `translateX(${(i - index) * 100}%)`;
+            });
+        }
+
+        function nextImage(button) {
+            const roomElement = button.closest('.room');
+            const images = roomElement.querySelectorAll('.room-images img');
+            let currentIndex = parseInt(roomElement.dataset.currentImage || '0'); // Получаем текущий индекс или 0, если не задан
+            const totalImages = images.length;
+
+            if (currentIndex < totalImages - 1) {
+                currentIndex++;
+                roomElement.dataset.currentImage = currentIndex; // Обновляем индекс
+                showImage(roomElement, currentIndex);
+                updateNavigationButtons(roomElement, currentIndex, totalImages);
+            }
+        }
+
+        function prevImage(button) {
+            const roomElement = button.closest('.room');
+            const images = roomElement.querySelectorAll('.room-images img');
+            let currentIndex = parseInt(roomElement.dataset.currentImage || '0');
+            const totalImages = images.length;
+
+            if (currentIndex > 0) {
+                currentIndex--;
+                roomElement.dataset.currentImage = currentIndex;
+                showImage(roomElement, currentIndex);
+                updateNavigationButtons(roomElement, currentIndex, totalImages);
+            }
+        }
+
+// JavaScript для переключения меню
+document.querySelector('.menu-toggle').addEventListener('click', function() {
+    document.querySelector('nav').classList.toggle('active');
+});
+
+        // Инициализация кнопок после загрузки страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.room').forEach(roomElement => {
+                const images = roomElement.querySelectorAll('.room-images img');
+                roomElement.dataset.currentImage = '0'; // Устанавливаем начальный индекс
+                showImage(roomElement, 0);
+                updateNavigationButtons(roomElement, 0, images.length);
+            });
+        });
+    </script>
+</body>
+</html>

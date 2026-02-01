@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Узнать о дате - Гостиница Гармония</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* ------------ ОБЩИЕ СТИЛИ ------------ */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header.container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fa9021;
+        }
+
+        /* ------------ НАВИГАЦИЯ ------------ */
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 35px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-list a {
+            text-decoration: none;
+            color: #fff;
+            transition: 0.3s;
+        }
+
+        .nav-list a:hover,
+        .nav-list li.active a {
+            color: #fa9021;
+        }
+
+        /* ------------ БУРГЕР МЕНЮ ------------ */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .bar {
+            width: 30px;
+            height: 3px;
+            background-color: #fa9021;
+            margin: 4px 0;
+            transition: 0.4s;
+        }
+
+        /* ------------ ТАЙМЕР (СТИЛИЗАЦИЯ) ------------ */
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        #countdown {
+            font-size: 2.5rem;
+            font-weight: 600;
+            background: rgba(250, 144, 33, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            border: 2px solid #fa9021;
+            box-shadow: 0 0 20px rgba(250, 144, 33, 0.2);
+            display: inline-block;
+        }
+
+        /* Стили для чисел внутри твоего скрипта */
+        #countdown span {
+            color: #fa9021;
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin: 0 10px;
+        }
+
+        /* ------------ АДАПТИВНОСТЬ ------------ */
+        @media screen and (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-list {
+                display: none;
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: #121212;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+
+            .nav-list.active {
+                display: flex;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            #countdown {
+                font-size: 1.2rem;
+                padding: 20px;
+                width: 90%;
+            }
+
+            #countdown span {
+                font-size: 2rem;
+            }
+        }
+
+        /* Анимация крестика */
+        .menu-toggle.is-active .bar:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.is-active .bar:nth-child(1) {
+            transform: translateY(11px) rotate(45deg);
+        }
+
+        .menu-toggle.is-active .bar:nth-child(3) {
+            transform: translateY(-11px) rotate(-45deg);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <header class="container">
+            <div class="logo">Гармония</div>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <nav>
+                <ul class="nav-list">
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="about.html">Номера</a></li>
+                    <li><a href="contackt.html">Контакты</a></li>
+                    <li class="active"><a href="novo.html">Узнать о дате</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="container">
+            <h1>До начала лета (1 июня) осталось:</h1>
+            <div id="countdown"></div>
+        </main>
+    </div>
+
+    <script>
+        // --- Логика меню ---
+        const menu = document.querySelector('#mobile-menu');
+        const menuLinks = document.querySelector('.nav-list');
+
+        menu.addEventListener('click', function() {
+            menu.classList.toggle('is-active');
+            menuLinks.classList.toggle('active');
+        });
+
+        // --- ТВОЯ Логика таймера ---
+        function getTimeRemaining(endtime) {
+            const total = Date.parse(endtime) - Date.parse(new Date());
+            const seconds = Math.floor((total / 1000) % 60);
+            const minutes = Math.floor((total / 1000 / 60) % 60);
+            const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+            const days = Math.floor(total / (1000 * 60 * 60 * 24));
+
+            return {
+                total,
+                days,
+                hours,
+                minutes,
+                seconds
+            };
+        }
+
+        function initializeClock(id, endtime) {
+            const clock = document.getElementById(id);
+
+            // Создаем элементы один раз
+            const daysSpan = document.createElement('span');
+            const hoursSpan = document.createElement('span');
+            const minutesSpan = document.createElement('span');
+            const secondsSpan = document.createElement('span');
+
+            // Очищаем контейнер перед добавлением (на всякий случай)
+            clock.innerHTML = '';
+
+            // Собираем структуру
+            clock.appendChild(daysSpan);
+            clock.appendChild(document.createTextNode(' д. '));
+            clock.appendChild(hoursSpan);
+            clock.appendChild(document.createTextNode(' ч. '));
+            clock.appendChild(minutesSpan);
+            clock.appendChild(document.createTextNode(' м. '));
+            clock.appendChild(secondsSpan);
+            clock.appendChild(document.createTextNode(' с.'));
+
+            function updateClock() {
+                const t = getTimeRemaining(endtime);
+
+                if (t.total <= 0) {
+                    clearInterval(timeinterval);
+                    clock.innerHTML = "Сезон открыт! Ждем вас!";
+                    return;
+                }
+
+                daysSpan.innerHTML = t.days;
+                hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+                minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+                secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+            }
+
+            updateClock();
+            const timeinterval = setInterval(updateClock, 1000);
+        }
+
+        // Устанавливаем дату на 1 июня 2026 года (!!!ВАЖНО!!!)
+        const deadline = new Date('June 1, 2026 00:00:00'); //  Используем JS Date object
+        initializeClock('countdown', deadline);
+    </script>
+</body>
+
+</html>

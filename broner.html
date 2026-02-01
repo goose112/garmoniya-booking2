@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Гармония — Васильковая 10</title>
+    <style>
+        :root {
+            --bg: #0d0e10;
+            --panel: rgba(20, 22, 26, 0.98);
+            --accent: #d4af37;
+            --green: #27ae60;
+            --red: #c0392b;
+            --text: #f0f0f0;
+            --road: #1f2124;
+        }
+
+                .home-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #000;
+            background: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 12px;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+        .home-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+            opacity: 0.9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: var(--bg); color: var(--text); overflow: hidden; width: 100vw; height: 100vh; position: fixed; }
+
+        /* ИНТЕРФЕЙС */
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; padding: 15px;
+            display: flex; justify-content: space-between; align-items: flex-start;
+            z-index: 1000; pointer-events: none;
+        }
+        .ui-element { pointer-events: auto; background: var(--panel); border: 1px solid #333; border-radius: 8px; padding: 10px; }
+        .menu-trigger { color: var(--accent); border: 1px solid var(--accent); cursor: pointer; font-weight: bold; font-size: 14px; }
+
+        /* БОКОВОЕ МЕНЮ */
+        .side-menu {
+            position: fixed; top: 0; left: -320px; width: 300px; height: 100%;
+            background: var(--panel); z-index: 2000; padding: 40px 20px;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); border-right: 2px solid var(--accent);
+            overflow-y: auto;
+        }
+        .side-menu.active { left: 0; }
+        .close-btn { position: absolute; top: 15px; right: 15px; font-size: 28px; color: var(--accent); cursor: pointer; }
+
+        .info-section { margin-top: 25px; border-top: 1px solid #333; padding-top: 15px; }
+        .info-title { color: var(--accent); font-size: 14px; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; }
+        .feature-item { display: flex; align-items: center; margin-bottom: 5px; font-size: 13px; color: #bbb; }
+        .feature-item::before { content: '•'; color: var(--accent); margin-right: 8px; }
+
+        /* СКРЫТАЯ АДМИНКА */
+        .admin-trigger { margin-top: 100px; color: #222; font-size: 10px; cursor: pointer; text-align: center; }
+        #adminArea { display: none; margin-top: 20px; border-top: 1px solid #444; padding-top: 10px; }
+        .booking-card { background: #000; padding: 10px; border-radius: 5px; margin-bottom: 10px; font-size: 11px; border-left: 3px solid var(--accent); position: relative; }
+        .del-this { position: absolute; right: 5px; top: 5px; color: var(--red); cursor: pointer; font-size: 18px; }
+
+        /* КАРТА И ВИЗУАЛ */
+        .scene { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; perspective: 1500px; touch-action: none; }
+        .map-plate { width: 1100px; height: 900px; background: #16181b; position: absolute; transform-style: preserve-3d; border: 10px solid #222; }
+
+        /* Забор */
+        .fence { position: absolute; border: 2px solid #333; width: 1080px; height: 880px; top: 0; left: 0; pointer-events: none; z-index: 5; }
+
+        .path { position: absolute; background: var(--road); z-index: 1; border: 1px solid #2a2d31; }
+        .pool { position: absolute; background: linear-gradient(45deg, #0e3a5d, #1e88e5); border: 2px solid #4fc3f7; z-index: 2; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; color: #fff; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); }
+        .parking { position: absolute; background: #2c3e50; border: 2px dashed #555; display: flex; align-items: center; justify-content: center; color: #888; font-weight: bold; z-index: 1; }
+
+        .obj-3d { position: absolute; transform-style: preserve-3d; width: 70px; height: 60px; z-index: 10; }
+        .box { width: 70px; height: 60px; position: relative; transform-style: preserve-3d; transition: 0.3s; cursor: pointer; }
+        .stone-house { background: #546e7a; transform: translateZ(30px); }
+        .wood-house { background: #8d6e63; transform: translateZ(20px); }
+        .label { position: absolute; bottom: -28px; width: 100%; text-align: center; color: var(--accent); transform: rotateX(-90deg); font-weight: bold; font-size: 12px; }
+        .status-light { position: absolute; width: 10px; height: 10px; background: var(--green); border-radius: 50%; top: -5px; right: -5px; box-shadow: 0 0 10px var(--green); transform: translateZ(45px); transition: 0.3s; }
+        .status-light.booked { background: var(--red); box-shadow: 0 0 10px var(--red); }
+        .tree { position: absolute; width: 40px; height: 40px; background: radial-gradient(circle, #27ae60, #1e8449); border-radius: 50%; z-index: 15; transform: translateZ(40px) rotateX(-90deg); }
+
+        /* МОДАЛКА */
+        .modal-bg { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); display:none; align-items:center; justify-content:center; z-index:5000; padding: 20px; }
+        .modal { background: #1a1c20; padding: 25px; border-radius: 20px; width: 100%; max-width: 420px; border: 1px solid var(--accent); max-height: 90vh; overflow-y: auto; }
+        .modal label { font-size: 10px; color: #777; text-transform: uppercase; margin-top: 10px; display: block; }
+        .modal input { width: 100%; padding: 10px; margin: 5px 0; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; font-size: 14px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .submit-btn { width: 100%; padding: 14px; background: var(--accent); border: none; font-weight: bold; border-radius: 10px; margin-top: 15px; cursor: pointer; color: #000; text-transform: uppercase; }
+        #success-view { display: none; text-align: center; padding: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="ui-element menu-trigger" onclick="toggleMenu()">☰ МЕНЮ</div>
+    <div style="text-align: center; pointer-events: auto;">
+        <div style="font-weight: bold; letter-spacing: 2px; color: var(--accent);">ГАРМОНИЯ</div>
+        <div style="font-size: 10px; opacity: 0.7;">ул. Васильковая 10</div>
+    </div>
+    <div class="ui-element" style="font-size: 12px;">☀️ +24°C</div>
+</div>
+
+<div class="side-menu" id="sideMenu">
+    <div class="close-btn" onclick="toggleMenu()">×</div>
+        <a href="index.html" class="home-btn">🏠 На главную</a>
+
+    <div class="info-section">
+        <div class="info-title">Что рядом</div>
+        <div class="feature-item">Азовское море (450м)</div>
+        <div class="feature-item">Столовая "Еда" (3 мин)</div>
+        <div class="feature-item">Магазин "Пятерочка" (5 мин)</div>
+        <div class="feature-item">Аквапарк "Амазонки" (10 мин)</div>
+    </div>
+
+    <div class="info-section">
+        <div class="info-title">Удобства</div>
+        <div class="feature-item">Бассейн с подогревом</div>
+        <div class="feature-item">Детская площадка</div>
+        <div class="feature-item">Мангальная зона</div>
+        <div class="feature-item">Парковка под видео</div>
+    </div>
+
+    <!-- СКРЫТАЯ АДМИНКА -->
+    <div class="admin-trigger" onclick="showPassInput()">service</div>
+    <div id="passField" style="display:none; margin-top:10px;">
+        <input type="password" id="aPass" placeholder="Код" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:5px;">
+        <button onclick="checkAdmin()" style="width:100%; margin-top:5px; font-size:10px;">Войти</button>
+    </div>
+
+    <div id="adminArea">
+        <div id="adminList"></div>
+        <button onclick="clearAll()" style="color:var(--red); background:none; border:1px solid var(--red); width:100%; padding:5px; margin-top:10px; cursor:pointer;">Очистить всё</button>
+    </div>
+</div>
+
+<div class="scene" id="scene">
+    <div class="map-plate" id="map">
+        <div class="fence"></div>
+        <div class="path" style="top: 190px; left: 100px; width: 800px; height: 35px;"></div>
+        <div class="path" style="top: 190px; left: 100px; width: 35px; height: 500px;"></div>
+        <div class="pool" style="top: 500px; left: 300px; width: 250px; height: 120px;">БАССЕЙН</div>
+        <div class="pool" style="top: 400px; left: 850px; width: 80px; height: 80px; border-radius: 50%; font-size: 10px;">ДЕТСКИЙ</div>
+        <div class="parking" style="top: 70px; left: 0px; width: 300px; height: 230px; transform: rotate(90deg);">PARKING</div>
+
+        <script>
+            // LUX Дома
+            for(let i=1; i<=5; i++) {
+                document.write(`<div class="obj-3d" style="top: 250px; left: ${200 + i*130}px;"><div class="box stone-house" onclick="handleHouse('L-${i}')"></div><div class="status-light booked"></div><div class="label">Lux ${i}</div></div>`);
+            }
+            // Обычные дома
+            const hPos = [{t:550, l:150}, {t:730, l:150}, {t:730, l:350}, {t:730, l:550}, {t:730, l:750}];
+            hPos.forEach((pos, i) => {
+                document.write(`<div class="obj-3d" style="top: ${pos.t}px; left: ${pos.l}px;"><div class="box wood-house" onclick="handleHouse('H-${i+1}')"></div><div class="status-light" id="light-H-${i+1}"></div><div class="label">H-${i+1}</div></div>`);
+            });
+            // Деревья
+            for(let i=0; i<8; i++) document.write(`<div class="tree" style="top: 20px; left: ${150 + i*100}px;"></div>`);
+        </script>
+    </div>
+</div>
+
+<!-- МОДАЛКА -->
+<div class="modal-bg" id="modal">
+    <div class="modal">
+        <div id="form-view">
+            <h2 id="mTitle" style="color:var(--accent); text-align:center; margin-bottom:15px;">Бронирование</h2>
+            <form action="https://formspree.io/f/mdaaaoqz" method="POST" id="bForm">
+                <input type="hidden" name="Домик" id="hInput">
+
+                <label>ФИО</label>
+                <input type="text" name="ФИО" placeholder="Иванов Иван Иванович" required>
+
+                <label>Email</label>
+                <input type="email" name="Email" placeholder="example@mail.ru" required>
+
+                <label>Телефон</label>
+                <input type="tel" name="Телефон" placeholder="+7 (___) ___-__-__" required>
+
+                <div class="form-grid">
+                    <div><label>Взрослых</label><input type="number" name="Взрослых" value="2" min="1"></div>
+                    <div><label>Детей</label><input type="number" name="Детей" value="0" min="0"></div>
+                </div>
+
+                <div class="form-grid">
+                    <div><label>Заезд</label><input type="date" name="Заезд" required></div>
+                    <div><label>Выезд</label><input type="date" name="Выезд" required></div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="subBtn">Забронировать</button>
+                <button type="button" onclick="closeModal()" style="width:100%; background:none; border:none; color:#555; margin-top:10px; cursor:pointer;">Закрыть</button>
+            </form>
+        </div>
+
+        <div id="success-view">
+            <h3 style="color:var(--green);">✓ Готово!</h3>
+            <p style="font-size:13px; margin:15px 0;">Заявка отправлена. Мы свяжемся с вами для подтверждения.</p>
+            <button onclick="closeModal()" class="submit-btn">ОК</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let db = JSON.parse(localStorage.getItem('harmony_v5_data') || '{}');
+    let rotX = 60, rotZ = -15, isDragging = false, lastX, lastY, moveDist = 0;
+    const map = document.getElementById('map');
+
+    function updateMap() {
+        const s = Math.min(window.innerWidth / 1200, window.innerHeight / 1000);
+        map.style.transform = `rotateX(${rotX}deg) rotateZ(${rotZ}deg) scale(${s})`;
+    }
+
+    function handleHouse(id) {
+        if (moveDist > 15) return;
+        if (id.startsWith('L')) { alert("Для брони LUX: +7 (914) 309-59-77"); return; }
+        if (db[id]) { alert("Этот домик уже забронирован."); return; }
+
+        document.getElementById('form-view').style.display = 'block';
+        document.getElementById('success-view').style.display = 'none';
+        document.getElementById('modal').style.display = 'flex';
+        document.getElementById('hInput').value = id;
+        document.getElementById('mTitle').innerText = "Домик " + id;
+    }
+
+    document.getElementById('bForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        const id = fd.get('Домик');
+        document.getElementById('subBtn').innerText = "ОТПРАВКА...";
+
+        db[id] = {
+            fio: fd.get('ФИО'),
+            dates: fd.get('Заезд') + ' - ' + fd.get('Выезд'),
+            guests: 'Взр:' + fd.get('Взрослых') + ' Дет:' + fd.get('Детей')
+        };
+
+        try {
+            await fetch(e.target.action, { method: 'POST', body: fd, headers: {'Accept': 'application/json'} });
+            localStorage.setItem('harmony_v5_data', JSON.stringify(db));
+            document.getElementById('form-view').style.display = 'none';
+            document.getElementById('success-view').style.display = 'block';
+            render();
+        } catch { alert("Ошибка. Попробуйте еще раз."); }
+    };
+
+    function render() {
+        // Лампочки
+        for(let i=1; i<=5; i++) {
+            const el = document.getElementById('light-H-'+i);
+            if(db['H-'+i]) el.classList.add('booked'); else el.classList.remove('booked');
+        }
+        // Админка
+        const list = document.getElementById('adminList');
+        list.innerHTML = '';
+        Object.keys(db).forEach(id => {
+            list.innerHTML += `
+                <div class="booking-card">
+                    <span class="del-this" onclick="deleteSingle('${id}')">×</span>
+                    <b>${id}</b>: ${db[id].fio}<br>
+                    <small>${db[id].dates} | ${db[id].guests}</small>
+                </div>
+            `;
+        });
+    }
+
+    function showPassInput() { document.getElementById('passField').style.display = 'block'; }
+    function checkAdmin() {
+        if(document.getElementById('aPass').value === '12345') {
+            document.getElementById('passField').style.display = 'none';
+            document.getElementById('adminArea').style.display = 'block';
+            render();
+        }
+    }
+
+    function deleteSingle(id) {
+        if(confirm('Удалить бронь домика '+id+'?')) { delete db[id]; localStorage.setItem('harmony_v5_data', JSON.stringify(db)); render(); }
+    }
+
+    function clearAll() {
+        if(confirm('Удалить ВСЕ бронирования?')) { db = {}; localStorage.setItem('harmony_v5_data', '{}'); render(); }
+    }
+
+    // Управление камерой
+    const st = (e) => { isDragging = true; moveDist = 0; lastX = e.touches ? e.touches[0].clientX : e.clientX; lastY = e.touches ? e.touches[0].clientY : e.clientY; };
+    const mv = (e) => {
+        if (!isDragging) return;
+        const x = e.touches ? e.touches[0].clientX : e.clientX;
+        const y = e.touches ? e.touches[0].clientY : e.clientY;
+        rotZ += (x - lastX) * 0.3;
+        rotX = Math.max(30, Math.min(80, rotX - (y - lastY) * 0.3));
+        moveDist += Math.abs(x - lastX) + Math.abs(y - lastY);
+        updateMap(); lastX = x; lastY = y;
+    };
+
+    function toggleMenu() { document.getElementById('sideMenu').classList.toggle('active'); }
+    function closeModal() { document.getElementById('modal').style.display = 'none'; }
+
+    document.getElementById('scene').addEventListener('mousedown', st);
+    window.addEventListener('mousemove', mv);
+    window.addEventListener('mouseup', () => isDragging = false);
+    document.getElementById('scene').addEventListener('touchstart', st);
+    window.addEventListener('touchmove', mv, {passive: false});
+    window.addEventListener('touchend', () => isDragging = false);
+    window.onload = () => { updateMap(); render(); };
+</script>
+
+</body>
+</html>
