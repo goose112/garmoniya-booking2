@@ -3,7 +3,7 @@
 
 Многостраничный веб-сайт для поиска и бронирования жилья. Проект включает интерактивные элементы, работу с картами и продуманную навигацию.
 
-[Посмотреть Live Demo] — **[().](https://share.google/VXfYHrV0caHJbCfR5)**
+[Посмотреть Live Demo] — **[[().](https://share.google/VXfYHrV0caHJbCfR5)](https://share.google/VXfYHrV0caHJbCfR5)**
 
 ---
 
